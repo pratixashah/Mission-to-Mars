@@ -92,8 +92,74 @@ def mars_facts(Browser):
 
     return df_mars_facts
 
+# Mars Hemispheres
+def mars_hemispheres(Browser):
+    # Setup splinter
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    browser = Browser('chrome', **executable_path, headless=False)
+
+    USGS_Astrogeology_url ="https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+    browser.visit(USGS_Astrogeology_url)
+
+    html = browser.html
+    soup = bs(html, 'html.parser')
+    # print(soup.prettify())
+
+    # browser.links.find_by_partial_text('FULL IMAGE').click()
+
+    mars_hemisphere_links = soup.select("div.collapsible div a.itemLink")
+
+    # mars_hemisphere_links
+            
+    browser.quit()
+
+    hemisphere_image_urls = []
+
+    for link in mars_hemisphere_links:
+    
+        try:
+            if(link.h3):
+                # print('---------------------')
+
+                # Use Beautiful Soup's find() method to navigate and retrieve attributes
+                url = USGS_Astrogeology_url.split("/search")[0] + link['href']
+
+                # print(url.strip())
+
+                executable_path = {'executable_path': ChromeDriverManager().install()}
+                browser = Browser('chrome', **executable_path, headless=False)
+            
+                browser.visit(url)
+
+                html = browser.html
+                soup = bs(html, 'html.parser')
+
+                time.sleep(1)
+        
+                title = soup.find("h2", class_="title")
+                image_url = soup.find("a", text="Sample")
+            
+                print(title.text)
+                print(image_url['href'])
+                
+                hemisphere_image_url = {}
+                
+                hemisphere_image_url["title"] = title.text
+                hemisphere_image_url['image_url'] = image_url['href']
+                
+                hemisphere_image_urls.append(hemisphere_image_url)
+
+                browser.quit()
+
+        except:
+            print("Scraping Complete")
+
+    print(hemisphere_image_urls)       
+    return hemisphere_image_urls
+
 mars_news(Browser)
 mars_featured_image(Browser)
 mars_facts(Browser)
+mars_hemispheres(Browser)
 
 
