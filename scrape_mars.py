@@ -18,11 +18,8 @@ def mars_news(Browser):
 
     browser.visit(mars_news_url)
 
-    # response = requests.get(space_image_url, verify=False)
-
     html = browser.html
     soup = bs(html, 'html.parser')
-    # print(soup.prettify())
 
     time.sleep(1)
 
@@ -47,25 +44,16 @@ def mars_featured_image(Browser):
 
     browser.visit(space_image_url)
 
-    # html = browser.html
-    # soup = bs(html, 'html.parser')
-
     time.sleep(1)
 
     browser.links.find_by_partial_text('FULL IMAGE').click()
 
-    # time.sleep(1)
-
     html = browser.html
     soup = bs(html, 'html.parser')
-
-    # print(soup.prettify())
 
     full_image_url = soup.find('img', class_="fancybox-image")
 
     print(full_image_url['src'])
-
-    # print(space_image_url.split("index.html")[0])
 
     featured_image_url = space_image_url.split("index.html")[0] + full_image_url['src']
     print(featured_image_url)
@@ -81,8 +69,6 @@ def mars_facts(Browser):
     table = pd.read_html(mars_fact_url)
     df_mars_facts = table[0]
 
-    # print(df_mars_facts)
-
     df_mars_facts.columns=["Description", "Mars"]
     df_mars_facts = df_mars_facts.set_index(["Description"])
 
@@ -94,6 +80,7 @@ def mars_facts(Browser):
 
 # Mars Hemispheres
 def mars_hemispheres(Browser):
+
     # Setup splinter
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
@@ -103,15 +90,12 @@ def mars_hemispheres(Browser):
 
     html = browser.html
     soup = bs(html, 'html.parser')
-    # print(soup.prettify())
-
-    # browser.links.find_by_partial_text('FULL IMAGE').click()
 
     mars_hemisphere_links = soup.select("div.collapsible div a.itemLink")
 
     # mars_hemisphere_links
     time.sleep(1)  
-       
+
     browser.quit()
 
     hemisphere_image_urls = []
@@ -120,12 +104,8 @@ def mars_hemispheres(Browser):
     
         try:
             if(link.h3):
-                # print('---------------------')
 
-                # Use Beautiful Soup's find() method to navigate and retrieve attributes
                 url = USGS_Astrogeology_url.split("/search")[0] + link['href']
-
-                # print(url.strip())
 
                 executable_path = {'executable_path': ChromeDriverManager().install()}
                 browser = Browser('chrome', **executable_path, headless=False)
