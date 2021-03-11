@@ -90,7 +90,7 @@ def mars_facts(Browser):
 
     df_mars_facts.to_html('mars_facts_table1.html')
 
-    return df_mars_facts
+    return df_mars_facts.to_dict()
 
 # Mars Hemispheres
 def mars_hemispheres(Browser):
@@ -110,7 +110,8 @@ def mars_hemispheres(Browser):
     mars_hemisphere_links = soup.select("div.collapsible div a.itemLink")
 
     # mars_hemisphere_links
-            
+    time.sleep(1)  
+       
     browser.quit()
 
     hemisphere_image_urls = []
@@ -157,9 +158,17 @@ def mars_hemispheres(Browser):
     print(hemisphere_image_urls)       
     return hemisphere_image_urls
 
-mars_news(Browser)
-mars_featured_image(Browser)
-mars_facts(Browser)
-mars_hemispheres(Browser)
+def scrape():
 
+    mars_dict = {}
+
+    mars_dict['mars_news'] = mars_news(Browser)
+    mars_dict['mars_featured_image'] = mars_featured_image(Browser)
+    mars_dict['mars_facts'] = mars_facts(Browser)
+    mars_dict['mars_hemispheres'] = mars_hemispheres(Browser)
+
+    print(mars_dict)
+    return mars_dict
+
+scrape()
 
