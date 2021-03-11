@@ -36,5 +36,45 @@ def mars_news(Browser):
 
     return news_title,news_text
 
+# JPL Mars Space Images - Featured Image
+def mars_featured_image(Browser):
+
+    # Setup splinter
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    browser = Browser('chrome', **executable_path, headless=False)
+
+    space_image_url = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/index.html'
+
+    browser.visit(space_image_url)
+
+    # html = browser.html
+    # soup = bs(html, 'html.parser')
+
+    time.sleep(1)
+
+    browser.links.find_by_partial_text('FULL IMAGE').click()
+
+    # time.sleep(1)
+
+    html = browser.html
+    soup = bs(html, 'html.parser')
+
+    # print(soup.prettify())
+
+    full_image_url = soup.find('img', class_="fancybox-image")
+
+    print(full_image_url['src'])
+
+    # print(space_image_url.split("index.html")[0])
+
+    featured_image_url = space_image_url.split("index.html")[0] + full_image_url['src']
+    print(featured_image_url)
+
+    browser.quit()
+
+    return featured_image_url
+
+
 
 mars_news(Browser)
+mars_featured_image(Browser)
