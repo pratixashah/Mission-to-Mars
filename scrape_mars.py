@@ -1,13 +1,13 @@
 
- 
-from splinter import Browser
-from webdriver_manager.chrome import ChromeDriverManager
-
 import bs4 
 from bs4 import BeautifulSoup as bs
 import requests
 import time
 import pandas as pd
+
+from splinter import Browser
+from webdriver_manager.chrome import ChromeDriverManager
+
 
 # NASA Mars Top News
 def mars_news(Browser):
@@ -53,7 +53,7 @@ def mars_featured_image(Browser):
 
     full_image_url = soup.find('img', class_="fancybox-image")
 
-    print(full_image_url['src'])
+    # print(full_image_url['src'])
 
     featured_image_url = space_image_url.split("index.html")[0] + full_image_url['src']
     print(featured_image_url)
@@ -74,7 +74,7 @@ def mars_facts(Browser):
 
     print(df_mars_facts)
 
-    df_mars_facts.to_html('mars_facts_table1.html')
+    # df_mars_facts.to_html('mars_facts_table1.html')
 
     return df_mars_facts.to_dict()
 
