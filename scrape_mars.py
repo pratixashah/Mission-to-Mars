@@ -21,17 +21,17 @@ def mars_news(Browser):
     html = browser.html
     soup = bs(html, 'html.parser')
 
-    time.sleep(1)
+    time.sleep(2)
 
-    news_title = soup.select_one("div.content_title a").text
-    print(news_title)
+    news_title = soup.select_one("div.content_title a")
+    print(news_title.text)
 
-    news_text = soup.select_one("div.article_teaser_body").text
-    print(news_text)
+    news_text = soup.select_one("div.article_teaser_body")
+    print(news_text.text)
 
     browser.quit()
 
-    return news_title,news_text
+    return news_title.text,news_text.text
 
 # JPL Mars Space Images - Featured Image
 def mars_featured_image(Browser):
@@ -150,5 +150,5 @@ def scrape():
     print(mars_dict)
     return mars_dict
 
-scrape()
+# scrape()
 

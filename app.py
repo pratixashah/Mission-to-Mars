@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from flask import Response
 from flask import Flask, jsonify
 
-import scrape_mars
+from scrape_mars import scrape
 #################################################
 # Flask Setup
 #################################################
@@ -31,7 +31,7 @@ def welcome():
 
 @app.route("/scrape")
 def scrape_data():
-    return scrape_mars.scrape()
+    return scrape()
 
 
 if __name__ == '__main__':
