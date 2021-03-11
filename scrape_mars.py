@@ -24,7 +24,7 @@ def mars_news(Browser):
     soup = bs(html, 'html.parser')
     # print(soup.prettify())
 
-    time.sleep(2)
+    time.sleep(1)
 
     news_title = soup.select_one("div.content_title a").text
     print(news_title)
@@ -74,7 +74,26 @@ def mars_featured_image(Browser):
 
     return featured_image_url
 
+# Mars Facts
+def mars_facts(Browser):
+    mars_fact_url = "https://space-facts.com/mars/"
 
+    table = pd.read_html(mars_fact_url)
+    df_mars_facts = table[0]
+
+    # print(df_mars_facts)
+
+    df_mars_facts.columns=["Description", "Mars"]
+    df_mars_facts = df_mars_facts.set_index(["Description"])
+
+    print(df_mars_facts)
+
+    df_mars_facts.to_html('mars_facts_table1.html')
+
+    return df_mars_facts
 
 mars_news(Browser)
 mars_featured_image(Browser)
+mars_facts(Browser)
+
+
