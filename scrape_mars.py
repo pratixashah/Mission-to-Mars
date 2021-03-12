@@ -3,11 +3,12 @@ import bs4
 from bs4 import BeautifulSoup as bs
 import requests
 import time
+import datetime
 import pandas as pd
 
 from splinter import Browser
 from webdriver_manager.chrome import ChromeDriverManager
-
+from flask import Flask, render_template, redirect
 
 # NASA Mars Top News
 def mars_news(Browser):
@@ -18,20 +19,23 @@ def mars_news(Browser):
 
     browser.visit(mars_news_url)
 
+    time.sleep(2)
+    
     html = browser.html
     soup = bs(html, 'html.parser')
 
-    time.sleep(2)
+    try:
+        news_title = soup.select_one("div.content_title a")
+        print(news_title.text)
 
-    news_title = soup.select_one("div.content_title a")
-    print(news_title.text)
+        news_text = soup.select_one("div.article_teaser_body")
+        print(news_text.text)
 
-    news_text = soup.select_one("div.article_teaser_body")
-    print(news_text.text)
+        browser.quit()
 
-    browser.quit()
-
-    return news_title.text,news_text.text
+        return news_title.text,news_text.text
+    except:
+        return None, None
 
 # JPL Mars Space Images - Featured Image
 def mars_featured_image(Browser):
@@ -46,37 +50,45 @@ def mars_featured_image(Browser):
 
     time.sleep(1)
 
-    browser.links.find_by_partial_text('FULL IMAGE').click()
+    try:
+        browser.links.find_by_partial_text('FULL IMAGE').click()
 
-    html = browser.html
-    soup = bs(html, 'html.parser')
+        html = browser.html
+        soup = bs(html, 'html.parser')
 
-    full_image_url = soup.find('img', class_="fancybox-image")
+        full_image_url = soup.find('img', class_="fancybox-image")
 
-    # print(full_image_url['src'])
+        # print(full_image_url['src'])
 
-    featured_image_url = space_image_url.split("index.html")[0] + full_image_url['src']
-    print(featured_image_url)
+        featured_image_url = space_image_url.split("index.html")[0] + full_image_url['src']
+        print(featured_image_url)
 
-    browser.quit()
+        browser.quit()
 
-    return featured_image_url
+        return featured_image_url
+
+    except:
+        return None
 
 # Mars Facts
 def mars_facts(Browser):
     mars_fact_url = "https://space-facts.com/mars/"
 
-    table = pd.read_html(mars_fact_url)
-    df_mars_facts = table[0]
+    try:
+        table = pd.read_html(mars_fact_url)
+        df_mars_facts = table[0]
 
-    df_mars_facts.columns=["Description", "Mars"]
-    df_mars_facts = df_mars_facts.set_index(["Description"])
+        df_mars_facts.columns=["Description", "Mars"]
+        df_mars_facts = df_mars_facts.set_index(["Description"])
 
-    print(df_mars_facts)
+        print(df_mars_facts)
 
-    # df_mars_facts.to_html('mars_facts_table1.html')
+        # df_mars_facts.to_html('mars_facts_table1.html')
 
-    return df_mars_facts.to_dict()
+        return df_mars_facts.to_html(classes="table table-striped table-hover")
+
+    except:
+        return None
 
 # Mars Hemispheres
 def mars_hemispheres(Browser):
@@ -91,18 +103,19 @@ def mars_hemispheres(Browser):
     html = browser.html
     soup = bs(html, 'html.parser')
 
-    mars_hemisphere_links = soup.select("div.collapsible div a.itemLink")
+    try:
 
-    # mars_hemisphere_links
-    time.sleep(1)  
+        mars_hemisphere_links = soup.select("div.collapsible div a.itemLink")
 
-    browser.quit()
+        # mars_hemisphere_links
+        time.sleep(1)  
 
-    hemisphere_image_urls = []
+        browser.quit()
 
-    for link in mars_hemisphere_links:
-    
-        try:
+        hemisphere_image_urls = []
+
+        for link in mars_hemisphere_links:
+        
             if(link.h3):
 
                 url = USGS_Astrogeology_url.split("/search")[0] + link['href']
@@ -131,21 +144,22 @@ def mars_hemispheres(Browser):
                 hemisphere_image_urls.append(hemisphere_image_url)
 
                 browser.quit()
+                print(hemisphere_image_urls)
 
-        except:
-            print("Scraping Complete")
-
-    print(hemisphere_image_urls)       
-    return hemisphere_image_urls
-
+        return hemisphere_image_urls
+    except:
+        return None           
+    
 def scrape():
 
     mars_dict = {}
-
-    mars_dict['mars_news'] = mars_news(Browser)
+    news_title,news_text = mars_news(Browser)
+    mars_dict['news_title'] = news_title
+    mars_dict['news_text'] = news_text
     mars_dict['mars_featured_image'] = mars_featured_image(Browser)
     mars_dict['mars_facts'] = mars_facts(Browser)
     mars_dict['mars_hemispheres'] = mars_hemispheres(Browser)
+    mars_dict['time_log'] = datetime.datetime.now()
 
     print(mars_dict)
     return mars_dict
