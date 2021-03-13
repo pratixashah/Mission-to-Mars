@@ -24,8 +24,11 @@ Uses MongoDB with Flask templating to create a new HTML page that displays all o
 
 **2. /** uses query Mongo database and pass the mars data into an HTML template to display the data.
 
-## index.html:
+## index.html(in templates dir):
 HTML file that will take the mars data dictionary and display all of the data in the appropriate HTML elements. 
+
+## Mission_to_Mars.jpg:
+Screen shot of the web page.
 
 
 
