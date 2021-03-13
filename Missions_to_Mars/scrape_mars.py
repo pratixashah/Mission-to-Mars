@@ -19,7 +19,7 @@ def mars_news(Browser):
 
     browser.visit(mars_news_url)
 
-    time.sleep(2)
+    time.sleep(3)
     
     html = browser.html
     soup = bs(html, 'html.parser')
@@ -48,7 +48,7 @@ def mars_featured_image(Browser):
 
     browser.visit(space_image_url)
 
-    time.sleep(1)
+    time.sleep(2)
 
     try:
         browser.links.find_by_partial_text('FULL IMAGE').click()
@@ -108,7 +108,7 @@ def mars_hemispheres(Browser):
         mars_hemisphere_links = soup.select("div.collapsible div a.itemLink")
 
         # mars_hemisphere_links
-        time.sleep(1)  
+        time.sleep(2)  
 
         browser.quit()
 
