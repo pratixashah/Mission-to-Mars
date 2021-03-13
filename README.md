@@ -16,13 +16,15 @@ A web application that scrapes various websites for data related to the Mission 
 
 ## scrape_mars.py: A Python script with a function called scrape that will execute all of your scraping code from above and return one Python dictionary containing all of the scraped data
 
-## Flask Application: Uses MongoDB with Flask templating to create a new HTML page that displays all of the information that was scraped from the URLs above.
+## app.py: 
+Uses MongoDB with Flask templating to create a new HTML page that displays all of the information that was scraped from the URLs above.
 
 **1. /scrape** uses scrape_mars.py script and call scrape function. Stores the return value in Mongo as a Python dictionary.
 
 **2. /** uses query Mongo database and pass the mars data into an HTML template to display the data.
 
-## index.html:** HTML file that will take the mars data dictionary and display all of the data in the appropriate HTML elements. 
+## index.html:
+HTML file that will take the mars data dictionary and display all of the data in the appropriate HTML elements. 
 
 
 
