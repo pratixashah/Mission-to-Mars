@@ -14,7 +14,8 @@ A web application that scrapes various websites for data related to the Mission 
 
 **4. Mars Hemispheres:** Use https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars to obtain high resolution images for each of Mar’s hemispheres. These obtained by clicking each of the links to the hemispheres in order to find the image url to the full resolution image. Stores both the image url string for the full resolution hemisphere image, and the Hemisphere title containing the hemisphere name in dictionary.
 
-## scrape_mars.py: A Python script with a function called scrape that will execute all of your scraping code from above and return one Python dictionary containing all of the scraped data
+## scrape_mars.py: 
+A Python script with a function called scrape that will execute all of your scraping code from above and return one Python dictionary containing all of the scraped data
 
 ## app.py: 
 Uses MongoDB with Flask templating to create a new HTML page that displays all of the information that was scraped from the URLs above.
